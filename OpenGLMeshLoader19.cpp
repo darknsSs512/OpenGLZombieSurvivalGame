@@ -142,7 +142,7 @@ bool firstLevel = true;
 
 bool disableHitting = 0;
 
-double dist(double x1, double z1, double x2, double z2) {
+double Dist(double x1, double z1, double x2, double z2) {
 	return sqrt(((x1 - x2) * (x1 - x2))
 		+ ((z1 - z2) * (z1 - z2)));
 }
@@ -1360,24 +1360,26 @@ void drawZombie(int i) {
 	glScalef(1, 2, 2);
 	glutSolidCube(1.5, i == 0 && !firstLevel ? 7:3);
 	glPopMatrix();
+	float handXMargin = 1;
+	float handZMargin = 2;
 
 	glPushMatrix();//											Zombie Right Arm
-	glTranslatef(zombieX[i] + 1, playerY - 2 + 0.75, zombieZ[i] + 1.5);
-	glTranslatef(-1.5, 0, -1.5);
+	glTranslatef(zombieX[i] + handXMargin, playerY - 2 + 0.75, zombieZ[i] + handZMargin);
+	glTranslatef(-handXMargin, 0, -handZMargin);
 	glRotated(zombieX[i] > playerX ? angInDegrees(Zang(i)) + 180 : angInDegrees(Zang(i)), 0, 1, 0); // rotate around body
-	glTranslatef(1.5, 0, 1.5);
+	glTranslatef(handXMargin, 0, handZMargin);
 	limbAngZ += angIncZ;
 	if (limbAngZ > 30)angIncZ *= -1;
 	if (limbAngZ < -30)angIncZ *= -1;
 	glScalef(2.5, 1, 1);
-	glutSolidCube(1.5, i == 0 && !firstLevel ? 5:1);
+	glutSolidCube(1.5, i == 0 && !firstLevel ? 5 : 1);
 	glPopMatrix();
 
 	glPushMatrix();//											Zombie Left Arm
-	glTranslatef(zombieX[i] + 1, playerY - 2 + 0.75, zombieZ[i] - 1.5);
-	glTranslatef(-1.50, 0, 1.5);
+	glTranslatef(zombieX[i] + handXMargin, playerY - 2 + 0.75, zombieZ[i] - handZMargin);
+	glTranslatef(-handXMargin, 0, handZMargin);
 	glRotated(zombieX[i] > playerX ? angInDegrees(Zang(i)) + 180 : angInDegrees(Zang(i)), 0, 1, 0); // rotate around body
-	glTranslatef(1.5, 0, -1.5);
+	glTranslatef(handXMargin, 0, -handZMargin);
 	glScalef(2.5, 1, 1);
 	glutSolidCube(1.5, i == 0 && !firstLevel ? 5:1);
 	glPopMatrix();
