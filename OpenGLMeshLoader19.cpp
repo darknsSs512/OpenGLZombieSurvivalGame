@@ -56,7 +56,7 @@ bool stickOn=false;
 bool swordOn = false;
 bool warhammerOn = false;
 bool winState = false;
-double sunX = 48, sunY = 32, sunZ = 0, sunSpeed = 1;
+double sunX = 48, sunY = 200, sunZ = 0, sunSpeed = 1,sunAng=0;
 
 enum weapon {myStick,mySword,myWarhammer,myFist};
 double stickX, stickZ;
@@ -68,6 +68,8 @@ int WIDTH = 1280;
 int HEIGHT = 720;
 
 bool secondView = 0;
+bool daytime = 1;
+
 
 bool humanReaction = false;//triggered when zombie hit you
 short humanReactionCounter = 0;
@@ -119,6 +121,7 @@ double zHitterIndex;
 GLuint tex;
 GLuint texFace;
 GLuint sunTex;
+GLuint moonTex;
 
 
 char title[] = "Full of Zombies";
@@ -410,7 +413,7 @@ void drawSword(double x, double z) {
 	glTranslated(-6,0 , 0);
 	
 	glRotated(-180, 0, 1, 0);
-
+	
 	glRotated(90, 0, 0, 1);
 	
 	glPushMatrix();//blade
@@ -1241,13 +1244,19 @@ void RenderGround()
 	glDisable(GL_LIGHTING);
 	GLUquadricObj* qobj;
 	qobj = gluNewQuadric();
-	glBindTexture(GL_TEXTURE_2D, sunTex);
+	glBindTexture(GL_TEXTURE_2D, daytime?sunTex :moonTex);
 	gluQuadricTexture(qobj, true);
 	gluQuadricNormals(qobj, GL_SMOOTH);
 	//drawhere
 
-	glTranslatef(sunX, sunY, sunZ);
-	gluSphere(qobj, 6, 30, 30);
+	//glTranslatef(sunX, sunY, sunZ);
+	//glTranslatef(45,sunY,3);
+	sunAng += 1;
+	if ((int)sunAng % 360 == 0)daytime = !daytime;// from day to night , vesa versa
+	glRotated(sunAng,1,0,0);
+	glTranslatef(45, sunY, 3);
+
+	gluSphere(qobj, 40, 30, 30);
 	gluDeleteQuadric(qobj);
 	glEnable(GL_LIGHTING);
 
@@ -1271,11 +1280,14 @@ void RenderGround()
 	short groundZ = -175;
 	short groundWX = 160;
 	short groundWZ = 335;
+
+	// this moves light , change that
 	if (sunZ > 155)sunSpeed *= -1;
 	if (sunZ < -170)sunSpeed *= -1;
 	sunZ += sunSpeed;
 	glEnable(GL_LIGHT2);
 
+	glColor3f(0.2, 0.2, 0.2);	// Dim the ground texture a bit
 
 	glPushMatrix();
 	glBegin(GL_QUADS);
@@ -2073,6 +2085,7 @@ void LoadAssets()
 	loadBMP(&tex, "Textures/blu-sky-3.bmp", true);
 	//loadBMP(&texFace, "Textures/hitler.bmp", false);
 	loadBMP(&sunTex, "Textures/sun.bmp", true);
+	loadBMP(&moonTex, "Textures/moon.bmp", true);
 
 	//loadBMP(&texFace, "Textures/hitler.bmp", true);
 
