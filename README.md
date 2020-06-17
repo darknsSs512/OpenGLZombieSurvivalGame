@@ -5,4 +5,4 @@ Game preview video
 
 https://drive.google.com/file/d/17FZwkOkVO78z-roRgtqNF81pvaC2WZTI/view?usp=sharing
 
-several bugs was fixed and some changes were made before the preview was published.
+several bugs was fixed and some changes were made after the preview was published.
